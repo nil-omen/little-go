@@ -4,9 +4,9 @@
 default:
     @just --list
 
-run:
+run lang="":
     @echo "Running the program ..."
-    go run .
+    go run . {{ if lang != "" { "-lang=" + lang } else { "" } }}
 
 test:
     @echo "Running tests ..."
@@ -27,4 +27,3 @@ tidy:
    go mod verify
    @echo "Formating code ..."
    go fmt ./...
- 
