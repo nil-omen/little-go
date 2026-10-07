@@ -1,0 +1,30 @@
+# Vars
+
+# Default task: list all available recipes
+default:
+    @just --list
+
+run:
+    @echo "Running the program ..."
+    go run .
+
+test:
+    @echo "Running tests ..."
+    go test -v ./...
+
+fmt:
+    @echo "Formating code ..."
+    go fmt ./...
+
+lint:
+    @echo "Linting code..."
+    golangci-lint run
+
+tidy:
+   @echo 'Tidying module dependencies...'
+   go mod tidy
+   @echo 'Verifying module dependencies...'
+   go mod verify
+   @echo "Formating code ..."
+   go fmt ./...
+ 
