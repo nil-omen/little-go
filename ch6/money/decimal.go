@@ -41,6 +41,8 @@ func ParseDecimal(value string) (Decimal, error) {
 	precision := byte(len(fracPart))
 	dec := Decimal{subunits: subunits, precision: precision}
 
+	dec.simplify()
+
 	return dec, nil
 }
 
