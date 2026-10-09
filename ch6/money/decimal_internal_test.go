@@ -68,7 +68,10 @@ func TestParseDecimal(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			got, err := ParseDecimal(tc.decimal)
 			if !errors.Is(err, tc.err) {
-				t.Errorf("expected error %v, got %v", tc.err, got)
+				t.Errorf("expected error %v, got %v", tc.err, err)
+			}
+			if got != tc.expected {
+				t.Errorf("expected %v, got %v", tc.expected, got)
 			}
 		})
 	}

@@ -1,6 +1,7 @@
 package money
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -16,7 +17,7 @@ type Decimal struct {
 
 const (
 	// ErrInvalidDecimal is returned if the decimal is malformed.
-	ErrInvalidDecimal = Error("unable to convert the decial")
+	ErrInvalidDecimal = Error("unable to convert the decimal")
 
 	// ErrTooLarge is returned if the quantity is too large
 	// this would cause floating point precision errors.
@@ -31,7 +32,7 @@ func ParseDecimal(value string) (Decimal, error) {
 
 	subunits, err := strconv.ParseInt(intPart+fracPart, 10, 64)
 	if err != nil {
-		return Decimal{}, err
+		return Decimal{}, fmt.Errorf("%w: %s", ErrInvalidDecimal, err)
 	}
 
 	if subunits > maxDecimal {
