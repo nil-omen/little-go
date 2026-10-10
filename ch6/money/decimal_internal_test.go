@@ -76,3 +76,21 @@ func TestParseDecimal(t *testing.T) {
 		})
 	}
 }
+
+func TestPow10(t *testing.T) {
+	tt := map[byte]int64{
+		0: 1,
+		1: 10,
+		2: 100,
+		3: 1000,
+		4: 10000,
+		5: 100000,
+		6: 1000000,
+	}
+
+	for power, expected := range tt {
+		if got := pow10(power); got != expected {
+			t.Errorf("pow10(%d) expected %d, got %d", power, expected, got)
+		}
+	}
+}

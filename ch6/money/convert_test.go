@@ -19,9 +19,18 @@ func TestConvert(t *testing.T) {
 				if err != nil {
 					t.Errorf("expected no error, got %s", err.Error())
 				}
-				expected := money.Amount{}
+				expected := mustParseAmount(t, "69.96", "EUR")
 				if !reflect.DeepEqual(got, expected) {
 					t.Errorf("expected %v, got %v", expected, got)
+				}
+			},
+		},
+		"Convert too large amount": {
+			amount: mustParseAmount(t, "5000000000.01", "USD"), // subunits=500000000001, converted = *2 > maxDecimal
+			to:     mustParseCurrency(t, "EUR"),
+			validate: func(t *testing.T, got money.Amount, err error) {
+				if err == nil {
+					t.Errorf("expected an error, got nil")
 				}
 			},
 		},
