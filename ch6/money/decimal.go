@@ -48,11 +48,27 @@ func ParseDecimal(value string) (Decimal, error) {
 	return dec, nil
 }
 
+// simplifies removes trailing zeroes
+// as long as they're on the right side of the decimal separator.
 func (d *Decimal) simplify() {
 	for d.subunits%10 == 0 && d.precision > 0 {
 		d.precision--
 		d.subunits /= 10
 	}
+}
+
+// String implements stringer and returns the Decimal formatted as
+// digits and optionally a decimal point followed by digits.
+func (d Decimal) String() string {
+	if d.precision == 0 {
+		return fmt.Sprintf("%d", d.subunits)
+	}
+	centsPerUnit := pow10(d.precision)
+	frac := d.subunits % centsPerUnit
+	integer := d.subunits / centsPerUnit
+
+	decimalFromat := "%d.%0" + strconv.Itoa(int(d.precision)) + "d"
+	return fmt.Sprintf(decimalFromat, integer, frac)
 }
 
 // pow10 is a quick implementation of how to raise 10 to a given power.

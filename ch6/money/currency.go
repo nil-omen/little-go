@@ -28,3 +28,8 @@ func ParseCurrency(code string) (Currency, error) {
 		return Currency{code: code, precision: 2}, nil
 	}
 }
+
+// String implements Stringer.
+func (c Currency) String() string {
+	return c.code
+}
