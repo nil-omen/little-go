@@ -21,7 +21,7 @@ type Client struct {
 
 // FetchExchangeRate fetches today's ExchangeRate and returns it.
 func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
-	const euroxrefURL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+	const euroxrefURL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
 
 	resp, err := http.Get(euroxrefURL)
 	if err != nil {
@@ -33,7 +33,13 @@ func (c Client) FetchExchangeRate(source, target money.Currency) (money.Exchange
 		return money.ExchangeRate{}, err
 	}
 
-	return money.ExchangeRate{}, nil
+	rate, err := readRateFromResponse(source.Code(), target.Code(), resp.Body)
+	if err != nil {
+		return money.ExchangeRate{}, err
+	}
+
+	return rate, nil
+
 }
 
 const (
